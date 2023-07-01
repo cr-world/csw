@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Солнечная система</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+	
+	.planet-info {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  background-color: #fff;
+	  color: #333;
+	  padding: 20px;
+	  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+	  border-radius: 5px;
+	  display: none;
+	  z-index: 1;
+	}
+
+	.planet-info h2 {
+	  font-size: 24px;
+	  margin-bottom: 10px;
+	}
+
+	.planet-info img {
+	  max-width: 100%;
+	  margin-top: 10px;
+	}
+  </style>
+</head>
+<body>
+	<div class="planet-info" id="mercury-info">
+		<h2 style="font-size: 28px; font-weight: bold;">Black Dward (черная звезда)</h2>
+		<p style="font-size: 18px; margin-bottom: 10px;">Создатель: "Calamity"</p>
+		<p style="font-size: 18px; margin-bottom: 20px;">Уровень: 5 (высший)</p>
+		<img src="https://phonoteka.org/uploads/posts/2023-03/thumbs/1679621361_phonoteka-org-p-chernaya-zvezda-oboi-pinterest-4.jpg" alt="Mercury">
+	</div>
+
+	<div class="planet-info" id="venus-info">
+	  <h2>Venus</h2>
+	  <p>Radius: 6,051.8 km</p>
+	  <p>Distance from Sun: 108.2 million km</p>
+	  <img src="venus.jpg" alt="Venus">
+	</div>
+
+	<div class="planet-info" id="earth-info">
+	  <h2>Earth</h2>
+	  <p>Radius: 6,371 km</p>
+	  <p>Distance from Sun: 149.6 million km</p>
+	  <img src="earth.jpg" alt="Earth">
+	</div>
+
+	<div class="planet-info" id="mars-info">
+	  <h2>Mars</h2>
+	  <p>Radius: 3,389.5 km</p>
+	  <p>Distance from Sun: 227.9 million km</p>
+	  <img src="mars.jpg" alt="Mars">
+	</div>
+
+	<div class="planet-info" id="jupiter-info">
+	  <h2>Jupiter</h2>
+	  <p>Radius: 69,911 km</p>
+	  <p>Distance from Sun: 778.6 million km</p>
+	  <img src="jupiter.jpg" alt="Jupiter">
+	</div>
+
+	<div class="planet-info" id="saturn-info">
+	  <h2>Saturn</h2>
+	  <p>Radius: 58,232 km</p>
+	  <p>Distance from Sun: 1.43 billion km</p>
+	  <img src="saturn.jpg" alt="Saturn">
+	</div>
+
+	<div class="planet-info" id="uranus-info">
+	  <h2>Uranus</h2>
+	  <p>Radius: 25,362 km</p>
+	  <p>Distance from Sun: 2.88 billion km</p>
+	  <img src="uranus.jpg" alt="Uranus">
+	</div>
+
+	<div class="planet-info" id="neptune-info">
+	  <h2>Neptune</h2>
+	  <p>Radius: 24,622 km</p>
+	  <p>Distance from Sun: 4.5 billion km</p>
+	  <img src="neptune.jpg" alt="Neptune">
+	</div>
+	
+	<div class="planet-info" id="garzon-info">
+	  <h2>Neptune</h2>
+	  <p>Radius: 24,622 km</p>
+	  <p>Distance from Sun: 4.5 billion km</p>
+	  <img src="neptune.jpg" alt="Garzon">
+	</div>
+	
+  <script src="https://cdn.rawgit.com/mrdoob/three.js/r102/build/three.min.js"></script>
+  <script src="https://cdn.rawgit.com/mrdoob/three.js/r102/examples/js/controls/OrbitControls.js"></script>
+  <script>
+    // Создаем сцену
+    var scene = new THREE.Scene();
+
+    // Создаем камеру
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 5);
+
+    // Создаем рендерер
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Создаем звездное небо
+    var starsGeometry = new THREE.Geometry();
+    for (var i = 0; i < 10000; i++) {
+      var star = new THREE.Vector3();
+      star.x = THREE.Math.randFloatSpread(2000);
+      star.y = THREE.Math.randFloatSpread(2000);
+      star.z = THREE.Math.randFloatSpread(2000);
+      starsGeometry.vertices.push(star);
+    }
+    var starsMaterial = new THREE.PointsMaterial({ color: 0xffffff });
+    var stars = new THREE.Points(starsGeometry, starsMaterial);
+    scene.add(stars);
+
+    // Создаем солнце
+    var sunTexture = new THREE.TextureLoader().load('https://sun9-57.userapi.com/impg/Vo5j0kd-ruEVPod06vGPXiVMNLRPSqQYx7Furw/4EBuETyLKRo.jpg?size=1280x640&quality=96&sign=4c2e986d601e7af038f71c25a3324233&type=album');
+    var sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
+    var sunGeometry = new THREE.SphereGeometry(1, 32, 32);
+    var sun = new THREE.Mesh(sunGeometry, sunMaterial);
+    scene.add(sun);
+
+    // Создаем планеты
+   var planetTextures = [
+   '' 
+   ];
+   var planetNames = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Garzon'];
+	var planets = [];
+	for (var i = 0; i < planetTextures.length; i++) {
+	  var texture = new THREE.TextureLoader().load(planetTextures[i]);
+	  var material = new THREE.MeshLambertMaterial({ map: texture });
+	  var geometry = new THREE.SphereGeometry(0.5, 32, 32);
+	  var planet = new THREE.Mesh(geometry, material);
+	  planet.position.set(i * 2 + 4, 0, 0);
+	  planet.name = planetNames[i];
+	  planets.push(planet);
+	  scene.add(planet);
+	}
+	
+	// Создаем объект-выборщик и задаем позицию камеры
+	var raycaster = new THREE.Raycaster();
+	var mouse = new THREE.Vector2();
+	function onMouseMove(event) {
+	  // Вычисляем нормализованные координаты мыши в канвасе
+	  var rect = renderer.domElement.getBoundingClientRect();
+	  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+	  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+	}
+	window.addEventListener('mousemove', function(event) {
+    onMouseMove(event);
+	}, false);
+
+	// Обработчик клика на объекты сцены
+	function showPlanetInfo(planet) {
+	  // Получаем элемент меню информации для планеты
+	  var info = document.getElementById(planet.name.toLowerCase() + "-info");
+	  // Показываем его и скрываем все остальные меню
+	  info.style.display = "block";
+	  planets.forEach(function (p) {
+		if (p != planet) {
+		  document.getElementById(p.name.toLowerCase() + "-info").style.display = "none";
+		}
+	  });
+	}
+	
+	window.addEventListener("click", function (event) {
+	  raycaster.setFromCamera(mouse, camera);
+	  var intersects = raycaster.intersectObjects(planets, true);
+	  if (intersects.length > 0) {
+		// Если пользователь кликнул на планету, отображаем меню с информацией о ней
+		var planet = intersects[0].object;
+		showPlanetInfo(planet);
+	  } else {
+		// Если пользователь кликнул вне планет, скрываем все меню
+		planets.forEach(function (p) {
+		  document.getElementById(p.name.toLowerCase() + "-info").style.display = "none";
+		});
+	  }
+	});
+	//window.addEventListener("click", onClick, false);
+
+    // Добавляем свет
+    var light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(0, 0, 10);
+    scene.add(light);
+
+    // Создаем контроллер орбиты для перемещения и вращения камеры
+    var control = new THREE.OrbitControls(camera, renderer.domElement);
+
+	// Создаем переменные скорости для каждой планеты
+	var planetSpeeds = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09];
+
+	function updatePlanets() {
+	  for (var i = 0; i < planets.length; i++) {
+		// Рассчитываем новое положение планеты
+		var angle = planetSpeeds[i] * Date.now() * 0.001;
+		var distance = i * 2 + 4;
+		planets[i].position.x = Math.cos(angle) * distance;
+		planets[i].position.z = Math.sin(angle) * distance;
+	  }
+	}
+	
+	// Создаем свет для каждой планеты
+	var planetLights = [];
+	for (var i = 0; i < planetTextures.length; i++) {
+	  var light = new THREE.PointLight(0xffffff, 1, 30);
+	  light.position.set(i * 2 + 4, 0, 0);
+	  planetLights.push(light);
+	  scene.add(light);
+	}
+
+	// Обновляем позиции светов и цвета в зависимости от положения солнца
+	function updatePlanetLights() {
+	  for (var i = 0; i < planetLights.length; i++) {
+		// Рассчитываем новую позицию света для каждой планеты
+		var angle = planetSpeeds[i] * Date.now() * 0.001;
+		var distance = i * 2 + 4;
+		var x = Math.cos(angle) * distance;
+		var z = Math.sin(angle) * distance;
+		planetLights[i].position.set(x, 0, z);
+
+		// Рассчитываем новый цвет света для каждой планеты
+		var distanceToSun = sun.position.distanceTo(planetLights[i].position);
+		var intensity = Math.max(1 - distanceToSun / 10, 0);
+		planetLights[i].color.setRGB(intensity, intensity, intensity);
+	  }
+	}
+
+    // Отображаем сцену
+	function render() {
+	  requestAnimationFrame(render);
+	  sun.rotation.y += 0.01;
+	  updatePlanets();
+	  updatePlanetLights();
+	  renderer.render(scene, camera);
+	}
+	render();
+  </script>
+</body>
+</html>
